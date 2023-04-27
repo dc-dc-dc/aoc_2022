@@ -27,17 +27,17 @@ func (h *MaxIntHeatp) Pop() any {
 }
 
 func main() {
-	file, err := os.Open("day_1_data")
+	file, err := os.Open("data.txt")
 	if err != nil {
 		panic(err)
 	}
 	defer file.Close()
+	scanner := bufio.NewScanner(file)
 
 	h := &MaxIntHeatp{}
 	heap.Init(h)
 
 	var current int
-	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		if len(scanner.Bytes()) == 0 {
 			heap.Push(h, current)
