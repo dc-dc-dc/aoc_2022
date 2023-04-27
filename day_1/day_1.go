@@ -27,7 +27,7 @@ func (h *MaxIntHeatp) Pop() any {
 }
 
 func main() {
-	file, err := os.Open("data.txt")
+	file, err := os.Open("day_1/data.txt")
 	if err != nil {
 		panic(err)
 	}
