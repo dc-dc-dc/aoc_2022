@@ -9,7 +9,7 @@ import (
 )
 
 func inBounds(ll, lr, rl, rr int) bool {
-	return (ll <= rl && rl <= lr) && (ll <= rr && rr <= lr)
+	return (ll <= rl && rl <= lr) || (ll <= rr && rr <= lr)
 }
 
 func main() {
