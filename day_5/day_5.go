@@ -8,10 +8,10 @@ import (
 	"strings"
 )
 
-func prependInt(x []rune, y rune) []rune {
-	x = append(x, 0)
-	copy(x[1:], x)
-	x[0] = y
+func prependInt(x []rune, y []rune) []rune {
+	x = append(x, y...)
+	copy(x[len(y):], x)
+	copy(x[:len(y)], y)
 	return x
 }
 
@@ -43,18 +43,25 @@ func main() {
 		}
 	}
 	// do some
+	// for _, c := range crates {
+	// 	fmt.Println(string(c))
+	// }
+
 	for scanner.Scan() {
 		line := strings.Split(scanner.Text(), " ")
 		count, _ := strconv.Atoi(line[1])
 		src, _ := strconv.Atoi(line[3])
 		dst, _ := strconv.Atoi(line[5])
-		for count > 0 {
-			val := crates[src-1][0]
-			crates[src-1] = crates[src-1][1:]
-			crates[dst-1] = prependInt(crates[dst-1], val)
-			count -= 1
+		temp := make([]rune, count)
+		copy(temp, crates[src-1][:count])
+
+		crates[dst-1] = append(temp, crates[dst-1]...) //prependInt(crates[dst-1], toAdd)
+		crates[src-1] = crates[src-1][count:]
+		for _, c := range crates {
+			fmt.Println(string(c))
 		}
 	}
+
 	for _, c := range crates {
 		res = append(res, c[0])
 	}
