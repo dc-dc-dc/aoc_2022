@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -75,6 +76,22 @@ func Calc(nodes []*Node) int {
 	return res
 }
 
+func FilterSizes(nodes []*Node, size int) []int {
+	next := []*Node{}
+	res := []int{}
+	for _, s := range nodes {
+		if s.totalsize >= size {
+			res = append(res, s.totalsize)
+		}
+		fmt.Printf("%s %d\n", s.name, s.totalsize)
+		next = append(next, s.children...)
+	}
+	if len(next) > 0 {
+		res = append(res, FilterSizes(next, size)...)
+	}
+	return res
+}
+
 func main() {
 	file, err := os.Open("day_7/data.txt")
 	if err != nil {
@@ -115,6 +132,15 @@ func main() {
 		root = root.parent
 	}
 	dfs(root)
-	result := Calc([]*Node{root})
-	fmt.Printf("%d\n", result)
+	// temp := []int{}
+	numToFind := root.totalsize - (maxSize - updateSize)
+	temp := FilterSizes([]*Node{root}, numToFind)
+	sort.Ints(temp)
+
+	fmt.Printf("%v\n", temp[0])
 }
+
+var (
+	maxSize    = 70_000_000
+	updateSize = 30_000_000
+)
